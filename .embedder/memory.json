@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "mem_1775823441975_8ebdd984",
+      "kind": "pattern",
+      "tags": [
+        "testing",
+        "project-structure"
+      ],
+      "keywords": [
+        "tests",
+        "unit",
+        "ztest",
+        "twister",
+        "native_sim",
+        "mock",
+        "hal_iface_t"
+      ],
+      "preview": "Test directory structure: tests/ root, tests/unit/ for ztest unit tests on native_sim with mock HAL",
+      "content": "Test directory layout:\\n- tests/ is the root for all tests\\n- tests/unit/ contains unit tests using ztest on native_sim\\n- tests/unit/CMakeLists.txt is a standalone Zephyr project including ../../include and ../../src\\n- tests/unit/prj.conf enables CONFIG_ZTEST=y and CONFIG_LOG=y\\n- tests/unit/testcase.yaml defines twister metadata (platforms: native_sim, nrf7002dk/nrf5340/cpuapp; harness: ztest)\\n- Tests construct their own hal_iface_t with mock function pointers -- never link hw_init.c\\n- Run tests: west twister -T tests/unit -p native_sim",
+      "paths": [
+        "tests/unit/CMakeLists.txt",
+        "tests/unit/prj.conf",
+        "tests/unit/testcase.yaml",
+        "EMBEDDER.md"
+      ],
+      "source": "explicit",
+      "pinned": false,
+      "createdAt": "2026-04-10T12:17:21.975Z",
+      "updatedAt": "2026-04-10T12:17:21.975Z"
+    }
+  ]
+}

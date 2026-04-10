@@ -1,0 +1,7 @@
+tests:
+  app.smoke_test:
+    platform_allow:
+      - native_sim
+      - nrf7002dk/nrf5340/cpuapp
+    tags: smoke_test
+    harness: ztest
