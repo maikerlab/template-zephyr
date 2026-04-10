@@ -9,5 +9,5 @@ target_include_directories(app PRIVATE
 )
 
 target_sources(app PRIVATE
-    # Add your test source files here
+    src/smoke.c
 )

@@ -4,7 +4,7 @@ Name = maikerlab_zephyr_template
 Target MCU = nRF5340 (dual-core Arm Cortex-M33) + nRF7002 Wi-Fi companion IC
 Board = nrf7002dk/nrf5340/cpuapp
 Toolchain = nRF Connect SDK (NCS) v3.2.3 / West / Zephyr CMake
-Toolchain Path = /opt/nordic/ncs
+Toolchain Path = /opt/nordic/ncs/v3.2.3
 Debug Interface = jlink (onboard SEGGER J-Link on nRF7002 DK)
 RTOS / SDK = Zephyr RTOS via nRF Connect SDK
 Project Summary = Generic Zephyr starter template for the nRF7002 DK.
@@ -40,6 +40,9 @@ A reusable Zephyr starter template targeting the nRF7002 DK (nRF5340 + nRF7002 W
 # Bash Commands
 
 ```bash
+# Source Zephyr environment (required before west commands)
+source /opt/nordic/ncs/v3.2.3/zephyr/zephyr-env.sh
+
 # Build
 west build -b nrf7002dk/nrf5340/cpuapp -p auto
 
@@ -55,11 +58,17 @@ west build -t menuconfig
 # Clean build directory
 rm -rf build
 
-# Run unit tests (twister)
+# Run unit tests on native_sim (twister)
 west twister -T tests/unit -p native_sim
 
-# Run unit tests (verbose)
+# Run unit tests on native_sim (verbose)
 west twister -T tests/unit -p native_sim -v
+
+# Build unit tests for on-device testing (nRF7002 DK)
+west build -b nrf7002dk/nrf5340/cpuapp -p always tests/unit
+
+# Flash unit tests onto device
+west flash --runner jlink
 ```
 
 # Code Style
