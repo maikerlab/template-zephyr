@@ -32,8 +32,7 @@ static struct gpio_callback btn_cb_data[BTN_COUNT];
  * Checks each button's pin against the triggered pin mask and dispatches
  * the registered callback, if any.
  */
-static void gpio_btn_isr(const struct device *dev, struct gpio_callback *cb,
-			 uint32_t pins)
+static void gpio_btn_isr(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
 	for (int i = 0; i < BTN_COUNT; i++) {
 		if ((pins & BIT(btns[i].pin)) && btn_callbacks[i]) {
@@ -86,13 +85,11 @@ const hal_iface_t *hw_init(void)
 			LOG_ERR("Failed to configure button %d", i);
 			return NULL;
 		}
-		if (gpio_pin_interrupt_configure_dt(&btns[i],
-						    GPIO_INT_EDGE_TO_ACTIVE) < 0) {
+		if (gpio_pin_interrupt_configure_dt(&btns[i], GPIO_INT_EDGE_TO_ACTIVE) < 0) {
 			LOG_ERR("Failed to configure button %d interrupt", i);
 			return NULL;
 		}
-		gpio_init_callback(&btn_cb_data[i], gpio_btn_isr,
-				   BIT(btns[i].pin));
+		gpio_init_callback(&btn_cb_data[i], gpio_btn_isr, BIT(btns[i].pin));
 		if (gpio_add_callback(btns[i].port, &btn_cb_data[i]) < 0) {
 			LOG_ERR("Failed to add button %d callback", i);
 			return NULL;
