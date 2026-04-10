@@ -29,6 +29,58 @@
       "pinned": false,
       "createdAt": "2026-04-10T12:17:21.975Z",
       "updatedAt": "2026-04-10T12:17:21.975Z"
+    },
+    {
+      "id": "mem_1775825335188_f4d92460",
+      "kind": "preference",
+      "tags": [
+        "toolchain",
+        "build"
+      ],
+      "keywords": [
+        "ncs",
+        "zephyr",
+        "west",
+        "environment",
+        "source",
+        "zephyr-env.sh"
+      ],
+      "preview": "NCS toolchain path is /opt/nordic/ncs/v3.2.3, must source zephyr-env.sh before west commands",
+      "content": "The NCS SDK is installed at /opt/nordic/ncs/v3.2.3 (not /opt/nordic/ncs). Before running west commands, the Zephyr environment must be sourced:\\n\\nsource /opt/nordic/ncs/v3.2.3/zephyr/zephyr-env.sh\\n\\nWithout this, west reports \\\"unknown command\\\" errors. The user cannot run native_sim tests on their macOS machine but native_sim should remain a supported platform for other environments.",
+      "paths": [
+        "EMBEDDER.md"
+      ],
+      "source": "explicit",
+      "pinned": false,
+      "createdAt": "2026-04-10T12:48:55.188Z",
+      "updatedAt": "2026-04-10T12:48:55.188Z"
+    },
+    {
+      "id": "mem_1775825850102_573855b9",
+      "kind": "pattern",
+      "tags": [
+        "testing",
+        "build"
+      ],
+      "keywords": [
+        "flash",
+        "jlink",
+        "runner",
+        "nrfutil",
+        "west flash",
+        "on-device",
+        "unit test"
+      ],
+      "preview": "Use --runner jlink for flashing; nrfutil is not installed. VCOM1 (port ending 913) is the UART console.",
+      "content": "Flashing on this machine requires `west flash --runner jlink` because nrfutil is not installed (and its `device` subcommand is missing).\\n\\nSerial ports on the nRF7002 DK:\\n- /dev/cu.usbmodem0010507765911 -- VCOM0 (not the app console)\\n- /dev/cu.usbmodem0010507765913 -- VCOM1 (UART console, ztest output appears here)\\n\\nJLink reset via `echo -e \\\"r\\\\ng\\\\nexit\\\\n\\\" | JLinkExe -device nRF5340_xxAA_APP -if SWD -speed 4000 -autoconnect 1` works but causes USB CDC ports to briefly drop, making it tricky to capture boot output. Best to connect serial first, then reset separately, then read history.\\n\\nOn-device test workflow:\\n1. west build -b nrf7002dk/nrf5340/cpuapp -p always tests/unit\\n2. west flash --runner jlink\\n3. Monitor VCOM1 for ztest output",
+      "paths": [
+        "tests/unit",
+        "EMBEDDER.md"
+      ],
+      "source": "inferred",
+      "pinned": false,
+      "createdAt": "2026-04-10T12:57:30.102Z",
+      "updatedAt": "2026-04-10T12:57:30.102Z"
     }
   ]
 }
