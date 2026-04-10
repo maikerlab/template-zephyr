@@ -120,6 +120,11 @@ jobs:
             tools
           key: west-ws-${{ runner.os }}-${{ hashFiles('app/west.yml') }}
 
+      - name: Install host toolchain for native_sim
+        run: |
+          apt-get -y update
+          apt-get -y install gcc-multilib g++-multilib make
+
       - name: Initialize and update west workspace
         run: |
           west init -l app
