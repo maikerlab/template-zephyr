@@ -15,7 +15,7 @@ Project Summary = Generic Zephyr starter template for the nRF7002 DK.
 build_command = west build -b nrf7002dk/nrf5340/cpuapp -p auto
 
 # --- Flash ------------------------------------------------------------------
-flash_command = west flash
+flash_command = west flash --runner jlink
 
 # --- Debug ------------------------------------------------------------------
 gdb_server_command = JLinkGDBServer -device nRF5340_xxAA_APP -if SWD -speed 4000 -port 61234
@@ -25,7 +25,7 @@ gdb_server_port = 61234
 target_connection = remote
 
 # --- Serial Monitor ----------------------------------------------------------
-serial_port = auto
+serial_port = /dev/cu.usbmodem0010507765913
 serial_baudrate = 115200
 serial_monitor_command = tio {port} -b {baud}
 serial_monitor_interactive = true
@@ -35,12 +35,13 @@ serial_startup_commands = []
 
 # Project Overview
 
-A reusable Zephyr starter template targeting the nRF7002 DK (nRF5340 + nRF7002 Wi-Fi). Uses a HAL abstraction layer (`hal_iface_t` in `include/hal_iface.h`) with function pointers for hardware access, enabling mock-based unit testing via ztest on `native_sim`. Production hardware is initialized through `src/hal/hw_init.c` (private), while tests construct their own `hal_iface_t` with mock implementations.
+A reusable Zephyr starter template targeting the nRF7002 DK (nRF5340 + nRF7002 Wi-Fi). Uses a HAL abstraction layer (`hal_iface_t` in `include/hal_iface.h`) with function pointers for hardware access, enabling mock-based unit testing via ztest on `native_sim`. Production hardware is initialized and driven through `src/hal.c` (private), while tests construct their own `hal_iface_t` with mock implementations.
 
 # Bash Commands
 
 ```bash
-# Source Zephyr environment (required before west commands)
+# Activate NCS toolchain and Zephyr environment (required before west commands)
+export PATH="/opt/nordic/ncs/toolchains/185bb0e3b6/bin:$PATH"
 source /opt/nordic/ncs/v3.2.3/zephyr/zephyr-env.sh
 
 # Build
@@ -50,7 +51,7 @@ west build -b nrf7002dk/nrf5340/cpuapp -p auto
 west build -b nrf7002dk/nrf5340/cpuapp -p always
 
 # Flash
-west flash
+west flash --runner jlink
 
 # Menuconfig (interactive Kconfig)
 west build -t menuconfig
@@ -84,7 +85,7 @@ Follow [Zephyr coding guidelines](https://docs.zephyrproject.org/latest/contribu
 - Kconfig in `prj.conf`, board-specific overrides in `boards/<board>.conf`
 - HAL interface (`hal_iface_t`) uses function pointers for hardware abstraction
 - Public headers in `include/`, private implementation headers in `src/`
-- `hw_init.h`/`hw_init.c` are private -- tests create their own `hal_iface_t` with mocks
+- `hal.h`/`hal.c` are private -- tests create their own `hal_iface_t` with mocks
 - HAL functions return `int` (0 success, negative errno) per Zephyr convention
 - List sources explicitly in CMakeLists.txt, do not use `GLOB_RECURSE`
 
