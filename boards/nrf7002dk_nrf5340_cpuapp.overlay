@@ -1,0 +1,14 @@
+/*
+ * Board-specific devicetree overlay for the nRF7002 DK.
+ * Use this file to override or extend the base devicetree.
+ *
+ * Example -- enable an I2C peripheral:
+ *
+ *   &i2c1 {
+ *       status = "okay";
+ *       my_sensor: my_sensor@48 {
+ *           compatible = "vendor,my-sensor";
+ *           reg = <0x48>;
+ *       };
+ *   };
+ */

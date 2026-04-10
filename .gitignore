@@ -1,4 +1,28 @@
-.vscode/
+# Build output
 build/
 twister-out/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+
+# Embedder
 .embedder/
+
+# Compiled objects and binaries
+*.o
+*.a
+*.elf
+*.hex
+*.bin
+*.map
+
+# CMake
+compile_commands.json
+CMakeUserPresets.json

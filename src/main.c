@@ -1,3 +1,12 @@
+/**
+ * @file main.c
+ * @brief Application entry point
+ *
+ * Demonstrates the HAL abstraction pattern: initializes hardware via hw_init(),
+ * registers a button callback that toggles an LED on press, then idles forever.
+ */
+
+#include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include "hal.h"
 
@@ -21,7 +30,12 @@ int main(void)
 		return -1;
 	}
 
-	hw->btn_register_cb(BTN_1, on_btn_pressed);
+	if (hw->btn_register_cb(BTN_1, on_btn_pressed) < 0) {
+		LOG_ERR("Failed to register button callback");
+		return -1;
+	}
 
+	/* Keep the main thread alive so ISR-driven callbacks continue to work */
+	k_sleep(K_FOREVER);
 	return 0;
 }

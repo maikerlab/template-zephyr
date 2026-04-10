@@ -1,3 +1,5 @@
+# Twister test metadata
+# Run with: west twister -T tests/unit -p native_sim
 tests:
   app.smoke_test:
     platform_allow:
@@ -5,3 +7,4 @@ tests:
       - nrf7002dk/nrf5340/cpuapp
     tags: smoke_test
     harness: ztest
+    timeout: 30

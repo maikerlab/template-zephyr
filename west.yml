@@ -1,3 +1,9 @@
+# West manifest -- pins the nRF Connect SDK version.
+# To switch SDK version, change the revision below and run:
+#   west update
+# For vanilla Zephyr (without NCS), replace the remote and project with:
+#   url-base: https://github.com/zephyrproject-rtos
+#   name: zephyr  /  revision: v4.1.0  (or desired tag)
 manifest:
   remotes:
     - name: ncs

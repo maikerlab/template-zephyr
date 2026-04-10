@@ -1,9 +1,19 @@
+/**
+ * @file hal.c
+ * @brief HAL implementation using Zephyr GPIO drivers
+ *
+ * Maps the abstract hal_iface_t to real hardware via devicetree aliases
+ * (led0, sw0). Manages LED output, button input with edge-triggered
+ * interrupts, and callback dispatch.
+ */
+
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/logging/log.h>
 #include "hal.h"
 
 LOG_MODULE_REGISTER(hal, LOG_LEVEL_DBG);
 
+/* GPIO specs obtained from devicetree aliases, indexed by led/btn ID */
 static const struct gpio_dt_spec leds[] = {
 	[LED_1] = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios),
 };
@@ -12,9 +22,16 @@ static const struct gpio_dt_spec btns[] = {
 	[BTN_1] = GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios),
 };
 
+/* Per-button callback storage and GPIO callback structs */
 static btn_callback_t btn_callbacks[BTN_COUNT];
 static struct gpio_callback btn_cb_data[BTN_COUNT];
 
+/**
+ * @brief GPIO ISR for button presses.
+ *
+ * Checks each button's pin against the triggered pin mask and dispatches
+ * the registered callback, if any.
+ */
 static void gpio_btn_isr(const struct device *dev, struct gpio_callback *cb,
 			 uint32_t pins)
 {
